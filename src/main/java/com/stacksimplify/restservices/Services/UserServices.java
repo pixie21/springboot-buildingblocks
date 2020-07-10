@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.stacksimplify.restservices.Entities.Order;
 import com.stacksimplify.restservices.Entities.User;
 import com.stacksimplify.restservices.Exceptions.UserExistsException;
 import com.stacksimplify.restservices.Exceptions.UserNotFound;
@@ -25,6 +26,7 @@ public class UserServices {
 	public List<User> getAllUsers(){
 		return userRepository.findAll();
 	}
+	
 	
 	//create user method
 	public User createUser(User user) throws UserExistsException {
@@ -54,7 +56,7 @@ public class UserServices {
 		if(!optionaluser.isPresent()) {
 			throw new UserNotFound("User Not found, cannot update");
 		}
-		user.setId(id);
+		user.setUserid(id);
 		return userRepository.save(user);
 		
 	}

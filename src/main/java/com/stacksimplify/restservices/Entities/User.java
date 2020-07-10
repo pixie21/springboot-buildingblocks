@@ -1,20 +1,26 @@
 package com.stacksimplify.restservices.Entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.springframework.hateoas.RepresentationModel;
+
+ 
 //entity
 @Entity
 @Table
-public class User {
+public class User extends RepresentationModel {
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long userid;
 	
 	
 	@NotEmpty(message = "Username is Mandatory. Please provide same")
@@ -37,6 +43,9 @@ public class User {
 	@Column(name="SSN", length=50, nullable=false, unique=true)
 	private String ssn;
 	
+	@OneToMany(mappedBy = "user")
+	private List<Order> orders;
+	
 	
 	//no Argument constructor
 	public User() {
@@ -45,7 +54,7 @@ public class User {
 
 
 	public User(Long id, String username, String firstname, String lastname, String email, String role, String ssn) {
-		this.id = id;
+		this.userid = id;
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -55,13 +64,16 @@ public class User {
 	}
 
 
-	public Long getId() {
-		return id;
+	
+
+
+	public Long getUserid() {
+		return userid;
 	}
 
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
 
 
@@ -125,11 +137,24 @@ public class User {
 	}
 
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
-				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
+		return "User [userid=" + userid + ", username=" + username + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders + "]";
 	}
+
+
+
 	
 	
 	
