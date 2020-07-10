@@ -16,43 +16,55 @@ import org.springframework.hateoas.RepresentationModel;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
  
 //entity
 @Entity
 @Table
 //@JsonIgnoreProperties({"firstname", "lastname"}) -Static filtering JSONIgnore
-@JsonFilter(value="userFilter")
+//@JsonFilter(value="userFilter") --Mapping Json Filtering
+
+
 public class User extends RepresentationModel {
 	@Id
 	@GeneratedValue
+	@JsonView(Views.External.class)
 	private Long userid;
 	
 	
 	@NotEmpty(message = "Username is Mandatory. Please provide same")
 	@Column(name="User_name", length=50, nullable=false, unique=true)
+	@JsonView(Views.External.class)
 	private String username;
 	
 	@Size(min=2, message="First name should have at least 2 characters")
 	@Column(name="First_name", length=50, nullable=false, unique=false)
+	@JsonView(Views.External.class)
 	private String firstname;
 	
 	@Size(min=2, message="Surname name should have at least 2 characters")
 	@Column(name="last_name", length=50, nullable=false, unique=false)
+	@JsonView(Views.External.class)
 	private String lastname;
 	
 	
 	@Column(name="Email", length=50, nullable=false, unique=false)
+	@JsonView(Views.External.class)
 	private String email;
+	
 	@Column(name="Role", length=50, nullable=false, unique=false)
+	@JsonView(Views.Internal.class)
 	private String role;
 	
 	
 	@Column(name="SSN", length=50, nullable=false, unique=true)
+	@JsonView(Views.Internal.class)
 //	@JsonIgnore - static filtering JSONIgnore
 	private String ssn;
 	
 	@OneToMany(mappedBy = "user")
+	@JsonView(Views.Internal.class)
 	private List<Order> orders;
 	
 	
