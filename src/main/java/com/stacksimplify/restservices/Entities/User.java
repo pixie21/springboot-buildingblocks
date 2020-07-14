@@ -13,173 +13,167 @@ import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 
- 
-//entity
+//Entity 
+// and
 @Entity
-@Table
-//@JsonIgnoreProperties({"firstname", "lastname"}) -Static filtering JSONIgnore
-//@JsonFilter(value="userFilter") --Mapping Json Filtering
-
-
+@Table(name = "user")
+//@JsonIgnoreProperties({"firstname", "lastname"})  -- Static Filtering @JsonIgnore
+//@JsonFilter(value = "userFilter")  -- Used for MappingJacksonValue filtering section
 public class User extends RepresentationModel {
+
 	@Id
 	@GeneratedValue
 	@JsonView(Views.External.class)
 	private Long userid;
-	
-	
-	@NotEmpty(message = "Username is Mandatory. Please provide same")
-	@Column(name="User_name", length=50, nullable=false, unique=true)
+
+	@NotEmpty(message = "Username is Mandatory field. Please provide username")
+	@Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
 	@JsonView(Views.External.class)
 	private String username;
-	
-	@Size(min=2, message="First name should have at least 2 characters")
-	@Column(name="First_name", length=50, nullable=false, unique=false)
+
+	@Size(min = 2, message = "FirstName should have atleast 2 characters")
+	@Column(name = "FIRST_NAME", length = 50, nullable = false)
 	@JsonView(Views.External.class)
 	private String firstname;
-	
-	@Size(min=2, message="Surname name should have at least 2 characters")
-	@Column(name="last_name", length=50, nullable=false, unique=false)
+
+	@Column(name = "LAST_NAME", length = 50, nullable = false)
 	@JsonView(Views.External.class)
 	private String lastname;
-	
-	
-	@Column(name="Email", length=50, nullable=false, unique=false)
+
+	@Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
 	@JsonView(Views.External.class)
 	private String email;
-	
-	@Column(name="Role", length=50, nullable=false, unique=false)
+
+	@Column(name = "ROLE", length = 50, nullable = false)
 	@JsonView(Views.Internal.class)
 	private String role;
-	
-	
-	@Column(name="SSN", length=50, nullable=false, unique=true)
+
+	@Column(name = "SSN", length = 50, nullable = false, unique = true)
+	//@JsonIgnore -- Static Filtering @JsonIgnore
 	@JsonView(Views.Internal.class)
-//	@JsonIgnore - static filtering JSONIgnore
 	private String ssn;
-	
+
 	@OneToMany(mappedBy = "user")
 	@JsonView(Views.Internal.class)
 	private List<Order> orders;
-	
-	
-	//no Argument constructor
-	public User() {
 
+	@Column(name = "ADDRESS")
+	private String address;
+	
+	// No Argument Constructor
+	public User() {
 	}
 
-
-	public User(Long id, String username, String firstname, String lastname, String email, String role, String ssn) {
-		this.userid = id;
+	// Fields Constructor
+	public User(Long userid,
+			@NotEmpty(message = "Username is Mandatory field. Please provide username") String username,
+			@Size(min = 2, message = "FirstName should have atleast 2 characters") String firstname, String lastname,
+			String email, String role, String ssn, List<Order> orders, String address) {
+		super();
+		this.userid = userid;
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 		this.role = role;
 		this.ssn = ssn;
+		this.orders = orders;
+		this.address = address;
 	}
-
-
 	
-
+	
+	// Getters and Setters
 
 	public Long getUserid() {
 		return userid;
 	}
 
 
+
 	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
-
 
 	public String getUsername() {
 		return username;
 	}
 
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 
 	public String getFirstname() {
 		return firstname;
 	}
 
-
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-
 
 	public String getLastname() {
 		return lastname;
 	}
 
-
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public String getRole() {
 		return role;
 	}
 
-
 	public void setRole(String role) {
 		this.role = role;
 	}
-
 
 	public String getSsn() {
 		return ssn;
 	}
 
-
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
-
 
 	public List<Order> getOrders() {
 		return orders;
 	}
 
-
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 
+	
+	
+	
 
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	// To String
 	@Override
 	public String toString() {
 		return "User [userid=" + userid + ", username=" + username + ", firstname=" + firstname + ", lastname="
-				+ lastname + ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders + "]";
+				+ lastname + ", email=" + email + ", role=" + role + ", ssn=" + ssn + ", orders=" + orders
+				+ ", address=" + address + "]";
 	}
+	
+	
 
 
-
-	
-	
-	
-	
-	
 
 }
